@@ -26,13 +26,13 @@ def update_robot(robot_id: int, robot: Robot):
         robot_db = session.get(Robot, robot_id)
         if robot_db is None:
             return None
-        if robot_db.name is not None:
+        if robot.name is not None:
             robot_db.name = robot.name
-        if robot_db.cost is not None:
+        if robot.cost is not None:
             robot_db.cost = robot.cost
-        if robot_db.power is not None:
+        if robot.power is not None:
             robot_db.power = robot.power
-        if robot_db.reload_time is not None:
+        if robot.reload_time is not None:
             robot_db.reload_time = robot.reload_time
         
         session.add(robot_db)

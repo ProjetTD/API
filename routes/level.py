@@ -25,11 +25,11 @@ def update_level(level_id: int, level: Level):
         level_db = session.get(Level, level_id)
         if level_db is None:
             return None
-        if level_db.number is not None:
+        if level.number is not None:
             level_db.number = level.number
-        if level_db.number_of_alien is not None:
+        if level.number_of_alien is not None:
             level_db.number_of_alien = level.number_of_alien
-        if level_db.reward is not None:
+        if level.reward is not None:
             level_db.reward = level.reward
         
         session.add(level_db)

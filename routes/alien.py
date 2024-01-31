@@ -25,15 +25,15 @@ def update_alien(alien_id: int, alien: Alien):
         alien_db = session.get(Alien, alien_id)
         if alien_db is None:
             return None
-        if alien_db.name is not None:
+        if alien.name is not None:
             alien_db.name = alien.name
-        if alien_db.power is not None:
+        if alien.power is not None:
             alien_db.power = alien.power
-        if alien_db.speed is not None:
+        if alien.speed is not None:
             alien_db.speed = alien.speed
-        if alien_db.health is not None:
+        if alien.health is not None:
             alien_db.health = alien.health
-        if alien_db.drop is not None:
+        if alien.drop is not None:
             alien_db.drop = alien.drop
         
         session.add(alien_db)
