@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, create_engine
 
@@ -16,9 +16,20 @@ def read_players():
         players = session.query(Player).all()
         return players
 
+@router.get("/players/{player_id}")
+def read_player(player_id: int):
+    with Session(engine) as session:
+        player = session.get(Player, player_id)
+        if player is None:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return player
+
 @router.post("/players/")
 def create_player(player: Player):
     with Session(engine) as session:
+        existing_player = session.query(Player).filter(Player.name == player.name).first()
+        if existing_player:
+            raise HTTPException(status_code=400, detail={"detail":"Player with this name already exists", "code":"PLAYER_ALREADY_EXISTS" })
         session.add(player)
         session.commit()
         session.refresh(player)
