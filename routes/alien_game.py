@@ -25,8 +25,10 @@ def update_alien_game(game_id: int, alien_id: int, alien_game: AlienGame):
         alien_game_db = session.get(AlienGame, (game_id, alien_id))
         if alien_game_db is None:
             return None
-        alien_game_db.pos_x = alien_game.pos_x
-        alien_game_db.pos_y = alien_game.pos_y
+        if alien_game.pos_x is not None:
+            alien_game_db.pos_x = alien_game.pos_x
+        if alien_game.pos_y is not None:
+            alien_game_db.pos_y = alien_game.pos_y
         session.add(alien_game_db)
         session.commit()
         session.refresh(alien_game_db)

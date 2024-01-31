@@ -25,8 +25,11 @@ def update_robot_game(game_id: int, robot_id: int, robot_game: RobotGame):
         robot_game_db = session.get(RobotGame, (game_id, robot_id))
         if robot_game_db is None:
             return None
-        robot_game_db.pos_x = robot_game.pos_x
-        robot_game_db.pos_y = robot_game.pos_y
+        if robot_game.pos_x is not None:
+            robot_game_db.pos_x = robot_game.pos_x
+        if robot_game.pos_y is not None:
+            robot_game_db.pos_y = robot_game.pos_y
+
         session.add(robot_game_db)
         session.commit()
         session.refresh(robot_game_db)

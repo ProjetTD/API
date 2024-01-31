@@ -30,10 +30,15 @@ def update_player(player_id: int, player: Player):
         player_db = session.get(Player, player_id)
         if player_db is None:
             return None
-        player_db.name = player.name
-        player_db.score = player.score
-        player_db.level = player.level
-        player_db.ressources = player.ressources
+        if player.name is not None:
+            player_db.name = player.name
+        if player.score is not None:
+            player_db.score = player.score
+        if player.level is not None:
+            player_db.level = player.level
+        if player.ressources is not None:
+            player_db.ressources = player.ressources
+
         session.add(player_db)
         session.commit()
         session.refresh(player_db)

@@ -25,10 +25,15 @@ def update_game(game_id: int, game: Game):
         game_db = session.get(Game, game_id)
         if game_db is None:
             return None
-        game_db.id_player = game.id_player
-        game_db.id_level = game.id_level
-        game_db.score = game.score
-        game_db.status = game.status
+        if game.id_player is not None:
+            game_db.id_player = game.id_player
+        if game.id_level is not None:
+            game_db.id_level = game.id_level
+        if game.score is not None:
+            game_db.score = game.score
+        if game.status is not None:
+            game_db.status = game.status
+        
         session.add(game_db)
         session.commit()
         session.refresh(game_db)
