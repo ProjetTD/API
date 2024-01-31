@@ -19,6 +19,21 @@ def create_game(game: Game):
         session.refresh(game)
         return game
 
+@router.patch("/games/{game_id}")
+def update_game(game_id: int, game: Game):
+    with Session(engine) as session:
+        game_db = session.get(Game, game_id)
+        if game_db is None:
+            return None
+        game_db.id_player = game.id_player
+        game_db.id_level = game.id_level
+        game_db.score = game.score
+        game_db.status = game.status
+        session.add(game_db)
+        session.commit()
+        session.refresh(game_db)
+        return game_db
+
 @router.put("/games/{game_id}")
 def update_game(game_id: int, game: Game):
     with Session(engine) as session:

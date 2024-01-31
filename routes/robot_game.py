@@ -19,6 +19,19 @@ def create_robot_game(robot_game: RobotGame):
         session.refresh(robot_game)
         return robot_game
 
+@router.patch("/robot_games/{game_id}/{robot_id}")
+def update_robot_game(game_id: int, robot_id: int, robot_game: RobotGame):
+    with Session(engine) as session:
+        robot_game_db = session.get(RobotGame, (game_id, robot_id))
+        if robot_game_db is None:
+            return None
+        robot_game_db.pos_x = robot_game.pos_x
+        robot_game_db.pos_y = robot_game.pos_y
+        session.add(robot_game_db)
+        session.commit()
+        session.refresh(robot_game_db)
+        return robot_game_db
+
 @router.put("/robot_games/{game_id}/{robot_id}")
 def update_robot_game(game_id: int, robot_id: int, robot_game: RobotGame):
     with Session(engine) as session:

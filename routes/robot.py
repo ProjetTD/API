@@ -20,6 +20,21 @@ def create_robot(robot: Robot):
         session.refresh(robot)
         return robot
 
+@router.patch("/robots/{robot_id}")
+def update_robot(robot_id: int, robot: Robot):
+    with Session(engine) as session:
+        robot_db = session.get(Robot, robot_id)
+        if robot_db is None:
+            return None
+        robot_db.name = robot.name
+        robot_db.cost = robot.cost
+        robot_db.power = robot.power
+        robot_db.reload_time = robot.reload_time
+        session.add(robot_db)
+        session.commit()
+        session.refresh(robot_db)
+        return robot_db
+
 @router.put("/robots/{robot_id}")
 def update_robot(robot_id: int, robot: Robot):
     with Session(engine) as session:

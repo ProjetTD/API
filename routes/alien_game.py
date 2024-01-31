@@ -19,6 +19,19 @@ def create_alien_game(alien_game: AlienGame):
         session.refresh(alien_game)
         return alien_game
 
+@router.patch("/alien_games/{game_id}/{alien_id}")
+def update_alien_game(game_id: int, alien_id: int, alien_game: AlienGame):
+    with Session(engine) as session:
+        alien_game_db = session.get(AlienGame, (game_id, alien_id))
+        if alien_game_db is None:
+            return None
+        alien_game_db.pos_x = alien_game.pos_x
+        alien_game_db.pos_y = alien_game.pos_y
+        session.add(alien_game_db)
+        session.commit()
+        session.refresh(alien_game_db)
+        return alien_game_db
+
 @router.put("/alien_games/{game_id}/{alien_id}")
 def update_alien_game(game_id: int, alien_id: int, alien_game: AlienGame):
     with Session(engine) as session:

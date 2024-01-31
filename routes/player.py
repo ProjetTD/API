@@ -24,6 +24,21 @@ def create_player(player: Player):
         session.refresh(player)
         return player
 
+@router.patch("/players/{player_id}")
+def update_player(player_id: int, player: Player):
+    with Session(engine) as session:
+        player_db = session.get(Player, player_id)
+        if player_db is None:
+            return None
+        player_db.name = player.name
+        player_db.score = player.score
+        player_db.level = player.level
+        player_db.ressources = player.ressources
+        session.add(player_db)
+        session.commit()
+        session.refresh(player_db)
+        return player_db
+
 @router.put("/players/{player_id}")
 def update_player(player_id: int, player: Player):
     with Session(engine) as session:

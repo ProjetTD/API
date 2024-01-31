@@ -19,6 +19,22 @@ def create_alien(alien: Alien):
         session.refresh(alien)
         return alien
 
+@router.patch("/aliens/{alien_id}")
+def update_alien(alien_id: int, alien: Alien):
+    with Session(engine) as session:
+        alien_db = session.get(Alien, alien_id)
+        if alien_db is None:
+            return None
+        alien_db.name = alien.name
+        alien_db.power = alien.power
+        alien_db.speed = alien.speed
+        alien_db.health = alien.health
+        alien_db.drop = alien.drop
+        session.add(alien_db)
+        session.commit()
+        session.refresh(alien_db)
+        return alien_db
+
 @router.put("/aliens/{alien_id}")
 def update_alien(alien_id: int, alien: Alien):
     with Session(engine) as session:
