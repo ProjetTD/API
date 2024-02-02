@@ -11,5 +11,6 @@ class Player(SQLModel, table=True):
     score: int
     level: int
     ressources: int
+    uid: str
 
 SQLModel.metadata.create_all(engine)

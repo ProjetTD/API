@@ -1,3 +1,4 @@
+from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, create_engine
@@ -16,10 +17,18 @@ def read_players():
         players = session.query(Player).all()
         return players
 
-@router.get("/players/{player_id}")
-def read_player(player_id: int):
+@router.get("/players/{uid}")
+def read_player(uid: str):
     with Session(engine) as session:
-        player = session.get(Player, player_id)
+        player = session.query(Player).filter(Player.uid == uid).first()
+        if player is None:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return player
+    
+@router.get("/players/name/{name}")
+def read_player_by_name(name: str):
+    with Session(engine) as session:
+        player = session.query(Player).filter(Player.name == name).first()
         if player is None:
             raise HTTPException(status_code=404, detail="Player not found")
         return player
@@ -29,11 +38,14 @@ def create_player(player: Player):
     with Session(engine) as session:
         existing_player = session.query(Player).filter(Player.name == player.name).first()
         if existing_player:
-            raise HTTPException(status_code=400, detail={"detail":"Player with this name already exists", "code":"PLAYER_ALREADY_EXISTS" })
-        session.add(player)
+            raise HTTPException(status_code=400, detail={"detail": "Player with this name already exists", "code": "PLAYER_ALREADY_EXISTS" })
+        player_uid = str(uuid4())
+        new_player = Player(**player.dict(), uid=player_uid)
+        session.add(new_player)
         session.commit()
-        session.refresh(player)
-        return player
+        session.refresh(new_player)
+
+        return new_player
 
 @router.patch("/players/{player_id}")
 def update_player(player_id: int, player: Player):
