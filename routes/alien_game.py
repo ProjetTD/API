@@ -10,6 +10,14 @@ def read_alien_games():
     with Session(engine) as session:
         alien_games = session.query(AlienGame).all()
         return alien_games
+    
+@router.get("/alien_games/{game_id}/{alien_id}")
+def read_alien_game(game_id: int, alien_id: int):
+    with Session(engine) as session:
+        alien_game = session.get(AlienGame, (game_id, alien_id))
+        if alien_game is None:
+            return None
+        return alien_game
 
 @router.post("/alien_games/")
 def create_alien_game(alien_game: AlienGame):

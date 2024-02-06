@@ -11,5 +11,6 @@ class Robot(SQLModel, table=True):
     cost: int
     power: int
     reload_time: int
+    health: int
 
 SQLModel.metadata.create_all(engine)

@@ -48,7 +48,7 @@ def create_player(player: Player):
         return new_player
 
 @router.patch("/players/{player_id}")
-def update_player(player_id: int, player: Player):
+def update_player(player_id: str, player: Player):
     with Session(engine) as session:
         player_db = session.get(Player, player_id)
         if player_db is None:

@@ -36,7 +36,7 @@ def create_game(game: Game):
         return new_game
 
 @router.patch("/games/{game_id}")
-def update_game(game_id: int, game: Game):
+def update_game(game_id: str, game: Game):
     with Session(engine) as session:
         game_db = session.get(Game, game_id)
         if game_db is None:
