@@ -6,11 +6,10 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 engine = create_engine(sqlite_url, echo=True)
 
 class Player(SQLModel, table=True):
-    id_player: int = Field(primary_key=True, index=True)
+    id_player: str = Field(primary_key=True, index=True)
     name: str = Field(index=True)
     score: int
     level: int
     ressources: int
-    uid: str
 
 SQLModel.metadata.create_all(engine)

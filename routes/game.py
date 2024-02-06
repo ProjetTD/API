@@ -1,3 +1,4 @@
+from uuid import uuid4
 from fastapi import APIRouter
 from sqlmodel import Session, create_engine
 
@@ -10,14 +11,29 @@ def read_games():
     with Session(engine) as session:
         games = session.query(Game).all()
         return games
+    
+@router.get("/games/{game_id}")
+def read_game(game_id: str):
+    with Session(engine) as session:
+        game = session.query(Game).filter(Game.id_game == game_id).first()
+        return game
+
+@router.get("/games/player/{player_id}")
+def read_game_by_player(player_id: str):
+    with Session(engine) as session:
+        game = session.query(Game).filter(Game.id_player == player_id).first()
+        return game
 
 @router.post("/games/")
 def create_game(game: Game):
     with Session(engine) as session:
-        session.add(game)
+        game_uid = str(uuid4())
+        new_game = Game(**game.dict(), id_game=game_uid)
+        print(new_game)
+        session.add(new_game)
         session.commit()
-        session.refresh(game)
-        return game
+        session.refresh(new_game)
+        return new_game
 
 @router.patch("/games/{game_id}")
 def update_game(game_id: int, game: Game):

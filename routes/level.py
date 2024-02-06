@@ -10,6 +10,12 @@ def read_levels():
     with Session(engine) as session:
         levels = session.query(Level).all()
         return levels
+    
+@router.get("/levels/{level_id}")
+def read_level(level_id: int):
+    with Session(engine) as session:
+        level = session.query(Level).filter(Level.id_level == level_id).first()
+        return level
 
 @router.post("/levels/")
 def create_level(level: Level):

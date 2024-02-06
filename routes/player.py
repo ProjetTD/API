@@ -20,7 +20,7 @@ def read_players():
 @router.get("/players/{uid}")
 def read_player(uid: str):
     with Session(engine) as session:
-        player = session.query(Player).filter(Player.uid == uid).first()
+        player = session.query(Player).filter(Player.id_player == uid).first()
         if player is None:
             raise HTTPException(status_code=404, detail="Player not found")
         return player
@@ -40,7 +40,7 @@ def create_player(player: Player):
         if existing_player:
             raise HTTPException(status_code=400, detail={"detail": "Player with this name already exists", "code": "PLAYER_ALREADY_EXISTS" })
         player_uid = str(uuid4())
-        new_player = Player(**player.dict(), uid=player_uid)
+        new_player = Player(**player.dict(), id_player=player_uid)
         session.add(new_player)
         session.commit()
         session.refresh(new_player)

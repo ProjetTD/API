@@ -12,5 +12,6 @@ class Alien(SQLModel, table=True):
     speed: int
     health: int
     drop: int
+    probability: int
 
 SQLModel.metadata.create_all(engine)
