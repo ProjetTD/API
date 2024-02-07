@@ -10,7 +10,7 @@ class Robot(SQLModel, table=True):
     name: str = Field(index=True)
     cost: int
     power: int
-    reload_time: int
+    reload_time: float
     health: int
 
 SQLModel.metadata.create_all(engine)
