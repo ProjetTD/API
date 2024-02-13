@@ -61,6 +61,10 @@ def update_player(player_id: str, player: Player):
             player_db.level = player.level
         if player.ressources is not None:
             player_db.ressources = player.ressources
+        if player.win is not None:
+            player_db.win = player.win
+        if player.lose is not None:
+            player_db.lose = player.lose
 
         session.add(player_db)
         session.commit()
@@ -77,6 +81,8 @@ def update_player(player_id: int, player: Player):
         player_db.score = player.score
         player_db.level = player.level
         player_db.ressources = player.ressources
+        player_db.win = player.win
+        player_db.lose = player.lose
         session.add(player_db)
         session.commit()
         session.refresh(player_db)
