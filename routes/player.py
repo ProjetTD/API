@@ -14,7 +14,7 @@ def default():
 @router.get("/players/")
 def read_players():
     with Session(engine) as session:
-        players = session.query(Player).all()
+        players = session.query(Player).order_by(Player.win.desc()).all()
         return players
 
 @router.get("/players/{uid}")
